@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MUSA Art Gallery</title>
+  
+  <!-- CDN Dependencies -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="assets/logo.jpeg" alt="MUSA Art Gallery">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <div class="btn-group" role="group">
+              <button id="btnVisitor" type="button" class="btn btn-outline-light active">Visitor</button>
+              <button id="btnCollector" type="button" class="btn btn-outline-light">Collector</button>
+              <button id="btnArtist" type="button" class="btn btn-outline-light">Artist</button>
+            </div>
+          </li>
+        </ul>
+        <div id="loginControls">
+          <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+        </div>
+        <div id="logoutControls" style="display:none;">
+          <span class="navbar-text me-3" id="userDisplayName">User Name</span>
+          <button class="btn btn-outline-light" id="logoutBtn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mt-4">
+    <div class="row">
+      <!-- Sidebar - Visible only in Visitor view -->
+      <div class="col-md-3 mb-4" id="visitorSidebar">
+        <div class="sidebar">
+          <h5>Filter Artworks</h5>
+          <div class="mb-3">
+            <label for="categoryFilter" class="form-label">Category</label>
+            <select class="form-select" id="categoryFilter">
+              <option value="all">All Categories</option>
+              <option value="painting">Painting</option>
+              <option value="sculpture">Sculpture</option>
+              <option value="photography">Photography</option>
+              <option value="digital">Digital Art</option>
+            </select>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="limitedViewToggle">
+            <label class="form-check-label" for="limitedViewToggle">Limited View</label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Content Area -->
+      <div class="col-md-9" id="mainContentArea">
+        <!-- Visitor View -->
+        <div id="visitorView">
+          <h2 class="mb-4">Gallery Highlights</h2>
+          <div class="row" id="artworkGrid">
+            <!-- Artwork cards will be loaded here -->
+          </div>
+        </div>
+        
+        <!-- Collector View -->
+        <div id="collectorView" style="display:none;">
+          <ul class="nav nav-tabs" id="collectorTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="available-tab" data-bs-toggle="tab" data-bs-target="#available" type="button">Available</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="purchased-tab" data-bs-toggle="tab" data-bs-target="#purchased" type="button">Purchased</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="recommended-tab" data-bs-toggle="tab" data-bs-target="#recommended" type="button">Recommended</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="collectorTabsContent">
+            <div class="tab-pane fade show active" id="available" role="tabpanel">
+              <div class="row" id="availableArtGrid">
+                <!-- Available artwork cards will be loaded here -->
+              </div>
+            </div>
+            <div class="tab-pane fade" id="purchased" role="tabpanel">
+              <div class="row" id="purchasedArtGrid">
+                <!-- Purchased artwork cards will be loaded here -->
+              </div>
+            </div>
+            <div class="tab-pane fade" id="recommended" role="tabpanel">
+              <h4 class="mb-3">AI Recommendations</h4>
+              <div class="recommendation-carousel" id="recommendationCarousel">
+                <!-- Recommendations will be loaded here -->
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Artist View -->
+        <div id="artistView" style="display:none;">
+          <ul class="nav nav-tabs" id="artistTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="myworks-tab" data-bs-toggle="tab" data-bs-target="#myworks" type="button">My Works</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload" type="button">Upload New</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="aifeedback-tab" data-bs-toggle="tab" data-bs-target="#aifeedback" type="button">AI Feedback</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="artistTabsContent">
+            <div class="tab-pane fade show active" id="myworks" role="tabpanel">
+              <div class="table-responsive mt-3">
+                <table class="table table-dark table-hover">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Thumbnail</th>
+                      <th>Views</th>
+                      <th>Inquiries</th>
+                      <th>Sales</th>
+                      <th>AI Score</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="artworksTable">
+                    <!-- Artist's works will be loaded here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="upload" role="tabpanel">
+              <div class="card bg-dark text-light border-secondary mt-3">
+                <div class="card-body">
+                  <h5 class="card-title">Upload New Artwork</h5>
+                  <form id="artworkUploadForm">
+                    <div class="mb-3">
+                      <label for="artTitle" class="form-label">Title</label>
+                      <input type="text" class="form-control" id="artTitle" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="artDescription" class="form-label">Description</label>
+                      <textarea class="form-control" id="artDescription" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                      <label for="artCategory" class="form-label">Category</label>
+                      <select class="form-select" id="artCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="painting">Painting</option>
+                        <option value="sculpture">Sculpture</option>
+                        <option value="photography">Photography</option>
+                        <option value="digital">Digital Art</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="artPrice" class="form-label">Price (USD)</label>
+                      <input type="number" class="form-control" id="artPrice" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="artImage" class="form-label">Image</label>
+                      <input type="file" class="form-control" id="artImage" accept="image/*" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="artVideo" class="form-label">Video (optional, max 25MB)</label>
+                      <input type="file" class="form-control" id="artVideo" accept="video/*">
+                    </div>
+                    <button type="submit" class="btn gold-btn">Upload Artwork</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="aifeedback" role="tabpanel">
+              <div class="card bg-dark text-light border-secondary mt-3">
+                <div class="card-body">
+                  <h5 class="card-title">AI Evaluation</h5>
+                  <div id="aiScorecard">
+                    <!-- AI evaluation will be loaded here -->
+                    <p>Select an artwork from "My Works" tab to receive AI feedback.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals -->
+  <!-- Login Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Login</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="loginEmail" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="loginEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="loginPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="loginPassword" required>
+            </div>
+            <button type="submit" class="btn gold-btn">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Artwork Preview Modal (Visitor) -->
+  <div class="modal fade" id="artworkPreviewModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title" id="artworkPreviewTitle">Artwork Title</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img id="artworkPreviewImage" src="" alt="Artwork" class="img-fluid mb-3">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Artwork Detail Modal (Collector) -->
+  <div class="modal fade" id="artworkDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title" id="artworkDetailTitle">Artwork Title</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <img id="artworkDetailImage" src="" alt="Artwork" class="img-fluid mb-3">
+            </div>
+            <div class="col-md-6">
+              <h5>Description</h5>
+              <p id="artworkDetailDescription">Description text here.</p>
+              <p><strong>Artist: </strong><span id="artworkDetailArtist">Artist Name</span></p>
+              <p><strong>Price: </strong>$<span id="artworkDetailPrice">0.00</span></p>
+              <button class="btn gold-btn" id="buyNowBtn">Buy Now</button>
+              <hr>
+              <button class="btn btn-outline-light" id="showNegotiationBtn">Open Negotiation Chat</button>
+              <button class="btn btn-outline-light" id="show360TourBtn">View 360° Tour</button>
+            </div>
+          </div>
+          <div class="mt-4 d-none" id="negotiationChatSection">
+            <h5>Negotiation Chat</h5>
+            <div class="chat-window mb-2" id="chatWindow">
+              <!-- Chat messages will appear here -->
+            </div>
+            <div class="input-group">
+              <input type="text" class="form-control" id="chatMessage" placeholder="Type your message...">
+              <button class="btn gold-btn" type="button" id="sendMessageBtn">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap & Core JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/visitor.js"></script>
+  <script src="js/collector.js"></script>
+  <script src="js/artist.js"></script>
+  <script src="js/modals.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

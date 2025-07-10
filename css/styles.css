@@ -1,0 +1,86 @@
+:root {
+  --primary-bg: #1E1E1E;
+  --card-bg: #FFFFFF;
+  --accent: #C79C60;
+}
+
+body {
+  background-color: var(--primary-bg);
+  color: #FFFFFF;
+}
+
+.navbar-brand img {
+  height: 40px;
+}
+
+.gold-btn {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #000;
+}
+
+.gold-btn:hover {
+  background-color: #b58b50;
+  border-color: #b58b50;
+  color: #000;
+}
+
+.card {
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.sidebar {
+  background-color: #2a2a2a;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.artwork-card {
+  background-color: var(--card-bg);
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.artwork-img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.tab-content {
+  background-color: #2a2a2a;
+  padding: 20px;
+  border-radius: 0 0 5px 5px;
+}
+
+.recommendation-carousel {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 20px 0;
+}
+
+.recommendation-carousel .card {
+  display: inline-block;
+  width: 250px;
+  margin-right: 15px;
+}
+
+.chat-window {
+  height: 300px;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  color: #000;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    margin-bottom: 20px;
+  }
+}
